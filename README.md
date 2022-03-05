@@ -1,11 +1,11 @@
 # Blog API
-[Full project description](https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs/lessons/blog-api).
+[Full project description](https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs/lessons/blog-api)
 
 The Blog API is a REST API with 2 frontends:
 - One for anyone to read blog posts and add comments
 - One for the blog owner to:
   - Create, publish/unpublish, and delete blog posts
-  - Delete comments.
+  - Delete comments
 
 
 
