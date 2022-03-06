@@ -2,9 +2,9 @@
 [Full project description](https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs/lessons/blog-api)
 
 ## Next steps
-Next, uncomment postRouter routes. Create basic postController functions. Create Post model.
-Then, carry on with Comments and User.
+Carry on with Comments and Post > relatedUserID.
 
+## Overview
 The Blog API is a REST API with 2 frontends:
 - One for anyone to read blog posts and add comments
 - One for the blog owner to:
@@ -20,11 +20,11 @@ The Blog API is a REST API with 2 frontends:
 
 **posts** {
    title,
-   text,
+   body,
    isPublished,
    timestamp,
    relatedUserID,
-   ID,
+   relatedComments
 }
 
 **comments** {
@@ -32,26 +32,23 @@ The Blog API is a REST API with 2 frontends:
    text,
    timestamp,
    relatedPostID,
-   ID,
 }
 
 ## Endpoints
+1. `/blog/api/v1/posts`
+   1. GET       `/`     DONE
+   2. POST      `/`     DONE
+   3. GET       `/:ID`  DONE
+   4. PUT       `/:ID`  DONE
+   5. DELETE    `/:ID`  DONE
+   6. GET       `/:ID/comments`
+   7. POST      `/:ID/comments/`
+   8. DELETE    `/:ID/comments/:ID`
 
-1. `/blog/api/v1`
-   1. GET       `/posts`
-   2. GET       `/posts/:ID`
-   3. GET       `/posts/:ID/comments`
-   4. POST      `/posts/:ID`
-   5. POST      `/posts/:ID/comments/`
-   6. PUT       `/posts/:ID`
-   7. DELETE    `/posts/:ID`
-   8. DELETE    `/posts/:ID/comments/:ID`
-
-2. `/blog/api/v1`
-   1. GET       `/users/login`
-   2. POST      `/users/login`
-   3. GET       `/users/logout` 
-   4. POST      `/users/logout` 
+2. `/blog/api/v1/users`
+   1. POST       `/signup` DONE
+   2. POST      `/login`   DONE
+   3. POST      `/logout`  DONE
 
 
 3. `/blog`

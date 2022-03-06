@@ -1,11 +1,19 @@
 const asyncHandler = require("express-async-handler");
+const Post = require("../models/postModel")
 
 // @desc    Get all blog posts
 // @route   /blog/api/v1/posts
 // @access  Public
 const get_posts = asyncHandler(async(req, res) => {
+    const posts = await Post.find();
+
     res.json({
-        getAll: true,
+        status: "success",
+        getAllPosts: true,
+        items: posts.length,
+        data: {
+            posts
+        }
     })
 });
 
@@ -13,17 +21,37 @@ const get_posts = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/:ID
 // @access  Public
 const get_post = asyncHandler(async(req, res) => {
+    const {ID} = req.params;
+    const post = await Post.findById(ID);
+
     res.json({
-        getOne: true,
+        status: "success",
+        getOnePost: true,
+        data: {
+            post
+        }
     })
 });
 
 // @desc    Create 1 blog post
-// @route   /blog/api/v1/posts/:ID
+// @route   /blog/api/v1/posts/
 // @access  Private
 const create_post = asyncHandler(async(req, res) => {
+    console.log(req.user);
+    const {title, body, isPublished} = req.body;
+
+    const post = await Post.create({
+        title,
+        body,
+        isPublished,
+    });
+
     res.json({
-        createOne: true,
+        status: "success",
+        createdOnePost: true,
+        data: {
+            post
+        }
     })
 });
 
@@ -31,8 +59,15 @@ const create_post = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/:ID
 // @access  Private
 const update_post = asyncHandler(async(req, res) => {
+    const {ID} = req.params;
+    const post = await Post.findByIdAndUpdate(ID, req.body, { new: true, });
+
     res.json({
-        updateOne: true,
+        status: "success",
+        updatedOnePost: true,
+        data: {
+            post
+        }
     })
 });
 
@@ -40,8 +75,13 @@ const update_post = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/:ID
 // @access  Private
 const delete_post = asyncHandler(async(req, res) => {
+    const {ID} = req.params;
+    const post = await Post.findByIdAndDelete(ID);
+
     res.json({
+        status: "success",
         deleteOne: true,
+        deleted: ID,
     })
 });
 

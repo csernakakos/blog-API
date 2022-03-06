@@ -11,7 +11,7 @@ const {connectDB} = require("./config/db");
 const {errorHandler} = require("./config/errorHandler");
 
 const postRouter = require("./routes/postRouter");
-// const userRouter = require("./routes/userRouter");
+const userRouter = require("./routes/userRouter");
 
 dotenv.config({path: "./.env"});
 const PORT = process.env.PORT || 3001;
@@ -24,7 +24,7 @@ app.use(express.urlencoded({extended: true, limit: "10kb"}));
 
 // Routes: API
 app.use("/blog/api/v1/posts", postRouter);
-// app.use("/blog/api/v1/users", userRouter);
+app.use("/blog/api/v1/users", userRouter);
 
 // Routes: frontends
 // app.use("/blog", viewRouter);

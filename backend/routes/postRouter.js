@@ -12,11 +12,11 @@ const {
 router
     .route("/")
     .get(get_posts)
+    .post(protectWithToken, create_post)
 
 router
     .route("/:ID")
     .get(get_post)
-    .post(protectWithToken, create_post)
     .put(protectWithToken, update_post)
     .delete(protectWithToken, delete_post)
 
