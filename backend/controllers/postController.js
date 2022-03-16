@@ -9,7 +9,7 @@ const User = require("../models/userModel");
 const get_posts = asyncHandler(async(req, res) => {
     const posts = await Post.find();
 
-    res.json({
+    res.status(200).json({
         status: "success",
         getAllPosts: true,
         items: posts.length,
@@ -24,9 +24,17 @@ const get_posts = asyncHandler(async(req, res) => {
 // @access  Public
 const get_post = asyncHandler(async(req, res) => {
     const {ID} = req.params;
-    const post = await Post.findById(ID);
+    let post;
 
-    res.json({
+    // CHECK if post exists
+    try {
+        post = await Post.findById(ID);
+    } catch (error) {
+        res.status(400);
+        throw new Error("No such post!");
+    }
+
+    res.status(200).json({
         status: "success",
         getOnePost: true,
         data: {
@@ -39,10 +47,23 @@ const get_post = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/
 // @access  Private
 const create_post = asyncHandler(async(req, res) => {
+
+    // ERROR: some information missing
+    if (!req.body.title || !req.body.body) {
+        res.status(400);
+        throw new Error("Please provide a post title and a post body.");
+    }
+
     const {title, body, isPublished} = req.body;
-    
-    const relatedUser = await User.findById(req.user._id);
-    
+    let relatedUser;
+
+    try {
+        relatedUser = await User.findById(req.user._id);
+    } catch (error) {
+        res.status(400);
+        throw new Error("Not authorized.")
+    }
+        
     const post = await Post.create({
         title,
         body,
@@ -50,7 +71,7 @@ const create_post = asyncHandler(async(req, res) => {
         relatedUserID: relatedUser._id,
     });
 
-    res.json({
+    res.status(201).json({
         status: "success",
         createdOnePost: true,
         data: {
@@ -64,9 +85,16 @@ const create_post = asyncHandler(async(req, res) => {
 // @access  Private
 const update_post = asyncHandler(async(req, res) => {
     const {ID} = req.params;
-    const post = await Post.findByIdAndUpdate(ID, req.body, { new: true, });
+    let post;
 
-    res.json({
+    try {
+        post = await Post.findByIdAndUpdate(ID, req.body, { new: true, });
+    } catch (error) {
+        res.status(400);
+        throw new Error("Failed to update blog post.");
+    }
+
+    res.status(202).json({
         status: "success",
         updatedOnePost: true,
         data: {
@@ -80,9 +108,15 @@ const update_post = asyncHandler(async(req, res) => {
 // @access  Private
 const delete_post = asyncHandler(async(req, res) => {
     const {ID} = req.params;
-    await Post.findByIdAndDelete(ID);
 
-    res.json({
+    try {
+        await Post.findByIdAndDelete(ID);
+    } catch (error) {
+        res.status(400);
+        throw new Error("Failed to delete blog post.");
+    }
+
+    res.status(204).json({
         status: "success",
         deleteOne: true,
         deleted: ID,
@@ -93,9 +127,17 @@ const delete_post = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/:postID/comments
 // @access  Public
 const get_comments = asyncHandler(async(req, res) => {
-    const relatedPost = await Post.findById(req.params.postID);
+    let relatedPost;
+    try {
+        relatedPost = await Post.findById(req.params.postID);
+    } catch (error) {
+        res.status(400);
+        throw new Error("No such post!")
+    }
+
     const comments = await Comment.find({relatedPostID: relatedPost._id});
-    res.json({
+
+    res.status(200).json({
         status: "success",
         getAllComments: true,
         items: comments.length,
@@ -110,17 +152,30 @@ const get_comments = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/:postID/comments
 // @access  Public
 const create_comment = asyncHandler(async(req, res) => {
+
+    // ERROR: some information missing
+    if (!req.body.body) {
+        res.status(400);
+        throw new Error("Please provide a comment body.")
+    }
+
     const { username, body } = req.body;
     const { postID } = req.params;
-    const relatedPost = await Post.findById(postID);
+    let relatedPost;
+    
+    try {
+        relatedPost = await Post.findById(postID);
+    } catch (error) {
+        throw new Error("No such post!");
+    }
 
     const comment = await Comment.create({
         username,
         body,
         relatedPostID: relatedPost._id,
-    })
+    });
 
-    res.json({
+    res.status(201).json({
         status: "success",
         createdOneComment: true,
         relatedPostID: relatedPost._id,
@@ -136,9 +191,20 @@ const create_comment = asyncHandler(async(req, res) => {
 const delete_comment = asyncHandler(async(req, res) => {
     const { commentID } = req.params;
 
-    await Comment.findByIdAndDelete(commentID);
+    try {
+       const relatedPost = await Post.findById(req.params.postID);
+    } catch (error) {
+        throw new Error("No such post!");
+    }
 
-    res.json({
+    try {
+        await Comment.findByIdAndDelete(commentID);
+    } catch (error) {
+        res.status(400);
+        throw new Error("No such comment!");
+    }
+
+    res.status(204).json({
         status: "success",
         deleteOne: true,
         deleted: commentID,

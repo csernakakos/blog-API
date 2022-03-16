@@ -12,7 +12,27 @@ function signToken(payload) {
 // @access  Public
 const post_signup = asyncHandler(async(req, res) => {
 
+    // ERROR: some information missing
+    if (!req.body.username || !req.body.email || !req.body.password) {
+        res.status(400);
+        throw new Error("Please provide a unique email address, a user name, and a password.")
+    };
+
     const {username, email, password} = req.body;
+
+    // ERROR: email already in use
+    let existingUser = await User.findOne({email});
+    if (existingUser) {
+        res.status(400);
+        throw new Error("This email address is already in use.");
+    };
+
+    // ERROR: user already in use
+    existingUser = await User.findOne({username});
+    if (existingUser) {
+        res.status(400);
+        throw new Error("This user name is already in use.");
+    };
 
     const salt = await bcrypt.genSalt(8);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -23,7 +43,7 @@ const post_signup = asyncHandler(async(req, res) => {
         password: hashedPassword,
     });
 
-    res.json({
+    res.status(201).json({
         status: "success",
         signedUp: true,
         data: {
@@ -38,11 +58,17 @@ const post_signup = asyncHandler(async(req, res) => {
 // @access  Public
 const post_login = asyncHandler(async(req, res) => {
 
+    // ERROR: some information missing
+    if (!req.body.email || !req.body.password) {
+        res.status(400);
+        throw new Error("Please enter your email address and password.")
+    };
+
     const {email, password} = req.body;
     const existingUser = await User.findOne({email}).select("+password");
 
-    if(existingUser && await bcrypt.compare(password, existingUser.password)){
-        res.json({
+    if (existingUser && await bcrypt.compare(password, existingUser.password)){
+        resstatus(200).json({
             status: "success",
             loggedIn: true,
             data: {
@@ -61,7 +87,7 @@ const post_login = asyncHandler(async(req, res) => {
 // @access  Public
 const post_logout = asyncHandler(async(req, res) => {
     req.user = null;
-    res.json({
+    res.status(200).json({
         status: "success",
         loggedOut: true,
         user: req.user,

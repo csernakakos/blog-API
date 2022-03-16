@@ -1,22 +1,11 @@
 # Blog API
 [Full project description](https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs/lessons/blog-api)
 
-
-## Achieved so far
-For Comments, created:
-- Model
-  - every comment belongs to exactly 1 post
-  - 1 post can have many comments
-  - 1 comment can belong to maximum 1 post
-
 ## Next steps
-1. Backend
-   1. Validate data
-   2. Handle errors
-2. Frontend
+1. Frontend
    1. Create 2 websites
    2. HTML form validation
-3. Docs
+2. Docs
    1. Document the Blog API
 
 ## Overview
