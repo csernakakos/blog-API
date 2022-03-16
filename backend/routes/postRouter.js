@@ -7,6 +7,9 @@ const {
     create_post,
     update_post,
     delete_post,
+    get_comments,
+    create_comment,
+    delete_comment,
 } = require("../controllers/postController");
 
 router
@@ -20,13 +23,13 @@ router
     .put(protectWithToken, update_post)
     .delete(protectWithToken, delete_post)
 
-// router
-//     .route("/:ID/comments")
-//     .get(get_comments)
-//     .post(create_comment)
+router
+    .route("/:postID/comments")
+    .get(get_comments)
+    .post(create_comment)
 
-// router
-//     .route("/:ID/comments/:ID")
-//     .delete(delete_comment)
+router
+    .route("/:postID/comments/:commentID")
+    .delete(protectWithToken, delete_comment)
 
 module.exports = router;

@@ -3,18 +3,21 @@
 
 
 ## Achieved so far
-- Set up userRouter
-- Registered 1 blog admin user
-- Created Post > relatedUserID
-
-## Next steps
-Carry on with Comments.
-For Comments, create:
+For Comments, created:
 - Model
-- commentsRouter
   - every comment belongs to exactly 1 post
   - 1 post can have many comments
   - 1 comment can belong to maximum 1 post
+
+## Next steps
+1. Backend
+   1. Validate data
+   2. Handle errors
+2. Frontend
+   1. Create 2 websites
+   2. HTML form validation
+3. Docs
+   1. Document the Blog API
 
 ## Overview
 The Blog API is a REST API with 2 frontends:
@@ -23,7 +26,7 @@ The Blog API is a REST API with 2 frontends:
   - Create, publish/unpublish, and delete blog posts
   - Delete comments
 
-## Database models
+## **DONE** Database models
 **user** {
    username,
    email,
@@ -41,26 +44,26 @@ The Blog API is a REST API with 2 frontends:
 
 **comments** {
    username,
-   text,
+   body,
    timestamp,
    relatedPostID,
 }
 
 ## Endpoints
-1. `/blog/api/v1/posts`
-   1. GET       `/`     DONE
-   2. POST      `/`     DONE
-   3. GET       `/:ID`  DONE
-   4. PUT       `/:ID`  DONE
-   5. DELETE    `/:ID`  DONE
+1. **DONE** `/blog/api/v1/posts`
+   1. GET       `/`
+   2. POST      `/`
+   3. GET       `/:ID`
+   4. PUT       `/:ID`
+   5. DELETE    `/:ID`
    6. GET       `/:ID/comments`
    7. POST      `/:ID/comments/`
-   8. DELETE    `/:ID/comments/:ID`
+   8. DELETE    `/:ID/comments/:commentID`
 
-2. `/blog/api/v1/users`
-   1. POST       `/signup` DONE
-   2. POST      `/login`   DONE
-   3. POST      `/logout`  DONE
+2. **DONE** `/blog/api/v1/users`
+   1. POST      `/signup`
+   2. POST      `/login`
+   3. POST      `/logout`
 
 
 3. `/blog`
