@@ -1,8 +1,20 @@
 # Blog API
 [Full project description](https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs/lessons/blog-api)
 
+
+## Achieved so far
+- Set up userRouter
+- Registered 1 blog admin user
+- Created Post > relatedUserID
+
 ## Next steps
-Carry on with Comments and Post > relatedUserID.
+Carry on with Comments.
+For Comments, create:
+- Model
+- commentsRouter
+  - every comment belongs to exactly 1 post
+  - 1 post can have many comments
+  - 1 comment can belong to maximum 1 post
 
 ## Overview
 The Blog API is a REST API with 2 frontends:

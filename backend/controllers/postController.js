@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const Post = require("../models/postModel")
+const Post = require("../models/postModel");
+const User = require("../models/userModel");
 
 // @desc    Get all blog posts
 // @route   /blog/api/v1/posts
@@ -37,13 +38,17 @@ const get_post = asyncHandler(async(req, res) => {
 // @route   /blog/api/v1/posts/
 // @access  Private
 const create_post = asyncHandler(async(req, res) => {
-    console.log(req.user);
     const {title, body, isPublished} = req.body;
+    
+    const relatedUser = await User.findById(req.user._id);
+    console.log(relatedUser.username, "<<<< CREATOR");
+
 
     const post = await Post.create({
         title,
         body,
         isPublished,
+        relatedUserID: relatedUser._id,
     });
 
     res.json({
